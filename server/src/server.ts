@@ -19,11 +19,11 @@ const fastify = Fastify({
   },
 });
 
-// Register plugins
-fastify.register(cors, {
-  origin: process.env.CLIENT_URL || "http://localhost:5173",
-  credentials: true,
-});
+// // Register plugins
+// fastify.register(cors, {
+//   origin: process.env.CLIENT_URL || "http://localhost:5173",
+//   credentials: true,
+// });
 
 fastify.register(databasePlugin);
 
@@ -36,39 +36,73 @@ fastify.get("/health", async () => {
   };
 });
 
-// Register routes
-fastify.register(clientRoutes, { prefix: "/api/clients" });
-
-// 404 handler
-fastify.setNotFoundHandler((request, reply) => {
-  reply.status(404).send({
-    success: false,
-    error: `Route ${request.method}:${request.url} not found`,
-  });
-});
-
-// Error handler
-fastify.setErrorHandler((error, request, reply) => {
-  fastify.log.error(error);
-
-  reply.status(error.statusCode || 500).send({
-    success: false,
-    error: error.message || "Internal server error",
-  });
-});
-
-// Start server
-const start = async () => {
+// ✅ NOUVELLE ROUTE: Récupérer la date courante de PostgreSQL
+fastify.get("/api/current-date", async (request, reply) => {
   try {
-    const port = parseInt(process.env.PORT || "3001");
-    await fastify.listen({ port, host: "0.0.0.0" });
-    fastify.log.info(`🚀 Server running on http://localhost:${port}`);
-    fastify.log.info(`📚 API: http://localhost:${port}/api`);
-    fastify.log.info(`💊 Health: http://localhost:${port}/health`);
+    // Exécuter la requête SELECT CURRENT_DATE
+    const result = await fastify.pg.query("SELECT CURRENT_DATE as current_date");
+
+    return {
+      success: true,
+      data: {
+        current_date: result.rows[0].current_date,
+        server_time: new Date().toISOString(),
+        database: process.env.DB_NAME || "tdc",
+      },
+      message: "Date retrieved successfully",
+    };
   } catch (error) {
     fastify.log.error(error);
+
+    const errorMessage = error instanceof Error ? error.message : String(error);
+
+    reply.status(500).send({
+      success: false,
+      error: "Failed to get current date from database",
+      details: errorMessage,
+    });
+  }
+});
+
+// // Register routes
+// fastify.register(clientRoutes, { prefix: "/api/clients" });
+
+// // 404 handler
+// fastify.setNotFoundHandler((request, reply) => {
+//   reply.status(404).send({
+//     success: false,
+//     error: `Route ${request.method}:${request.url} not found`,
+//   });
+// });
+
+// // Error handler - CORRIGÉ avec type guard
+// fastify.setErrorHandler((error, request, reply) => {
+//   fastify.log.error(error);
+
+//   // Type guard pour gérer l'erreur de type 'unknown'
+//   const statusCode =
+//     error && typeof error === "object" && "statusCode" in error ? (error as any).statusCode : 500;
+
+//   const errorMessage = error instanceof Error ? error.message : "Internal server error";
+
+//   reply.status(statusCode).send({
+//     success: false,
+//     error: errorMessage,
+//   });
+// });
+
+// Start server
+
+async function start() {
+  try {
+    const port = parseInt(process.env.PORT || "3001");
+    const host = process.env.HOST || "127.0.0.1";
+    await fastify.listen({ port, host });
+    fastify.log.info(`🚀 Server running on http://${host}:${port}`);
+  } catch (error) {
+    console.error(error);
     process.exit(1);
   }
-};
+}
 
 start();

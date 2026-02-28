@@ -29,7 +29,7 @@ async function databasePlugin(fastify: FastifyInstance) {
     fastify.log.info("✅ PostgreSQL connected successfully");
     client.release();
   } catch (error) {
-    fastify.log.error("❌ PostgreSQL connection failed:", error);
+    fastify.log.error("❌ PostgreSQL connection failed:");
     throw error;
   }
 
