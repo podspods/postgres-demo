@@ -1,3 +1,7 @@
+# requierement
+
+- multilangue par i18n
+
 ```
 postgres-demo/
     ├── client/ # Frontend React (Vite)
@@ -30,4 +34,5 @@ postgres-demo/
          └── package.json
 
 ```
+
 # postgres-demo

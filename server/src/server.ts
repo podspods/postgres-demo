@@ -19,11 +19,12 @@ const fastify = Fastify({
   },
 });
 
-// // Register plugins
-// fastify.register(cors, {
-//   origin: process.env.CLIENT_URL || "http://localhost:5173",
-//   credentials: true,
-// });
+// Register plugins
+fastify.register(cors, {
+  // origin: process.env.CLIENT_URL || "http://localhost:5173",
+  origin: "*",
+  credentials: true,
+});
 
 fastify.register(databasePlugin);
 
