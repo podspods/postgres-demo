@@ -1,4 +1,3 @@
-import React from "react";
 import styled from "styled-components";
 import { Menu } from "../Navigation/Menu";
 import { flexBetween } from "../../styles/mixins";
@@ -16,6 +15,12 @@ const HeaderContainer = styled.header`
     padding: ${({ theme }) => theme.spacing.md};
   }
 `;
+const LogoContainer = styled.div`
+  display: flex;
+  align-items: center;
+  gap: ${({ theme }) => theme.spacing.sm};
+  cursor: pointer;
+`;
 
 const Logo = styled.div`
   font-size: ${({ theme }) => theme.fontSize.xl};
@@ -32,19 +37,33 @@ const Logo = styled.div`
   }
 `;
 
+const LogoImage = styled.img`
+  height: 40px;
+  width: auto;
+  object-fit: contain;
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.sm}) {
+    height: 30px;
+  }
+`;
+
 const menuItems = [
   { path: "/", label: "Home" },
   { path: "/about", label: "About" },
   { path: "/test", label: "Test" },
 ];
 
-export const Header: React.FC = () => {
+export type HeaderProps = {};
+export default function Header({ ...props }: HeaderProps) {
   return (
     <HeaderContainer>
-      <Logo>
-        MyApp<span>.com</span>
-      </Logo>
+      <LogoContainer>
+        <LogoImage src="/TCD-logo.png" alt="TDC Logo" />
+        <Logo>
+          TDC<span>.com</span>
+        </Logo>
+      </LogoContainer>
       <Menu items={menuItems} />
     </HeaderContainer>
   );
-};
+}
