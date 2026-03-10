@@ -36,3 +36,34 @@ postgres-demo/
 ```
 
 # postgres-demo
+
+## access to MotorcyclBrand
+
+```
+postgres-demo/
+├── server/
+│   ├── src/
+│   │   ├── routes/
+│   │   │   └── motorcycleBrand.routes.ts
+│   │   ├── controllers/
+│   │   │   └── motorcycleBrand.controller.ts
+│   │   ├── services/
+│   │   │   └── motorcycleBrand.service.ts
+│   │   ├── repositories/
+│   │   │   └── motorcycleBrand.repository.ts
+│   │   ├── models/
+│   │   │   └── motorcycleBrand.model.ts
+│   │   └── types/
+│   │       └── motorcycleBrand.types.ts
+│   └── server.ts
+├── client/
+│   ├── src/
+│   │   ├── services/
+│   │   │   └── motorcycleBrand.service.ts
+│   │   ├── types/
+│   │   │   └── motorcycleBrand.types.ts
+│   │   └── components/
+│   │       └── MotorcycleBrandList.tsx
+└── database.sql
+
+```

@@ -3,6 +3,7 @@ import cors from "@fastify/cors";
 import dotenv from "dotenv";
 import databasePlugin from "./plugins/database";
 import clientRoutes from "./routes/clients";
+import motorcycleBrandRoutes from "./routes/motorcycleBrand.routes";
 
 dotenv.config();
 
@@ -36,6 +37,7 @@ fastify.get("/health", async () => {
     uptime: process.uptime(),
   };
 });
+fastify.register(motorcycleBrandRoutes, { prefix: "/api/motorcycle-brands" });
 
 // ✅ NOUVELLE ROUTE: Récupérer la date courante de PostgreSQL
 fastify.get("/api/current-date", async (request, reply) => {
