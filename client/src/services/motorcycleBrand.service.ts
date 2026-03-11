@@ -1,10 +1,10 @@
 import {
   MotorcycleBrand,
-  CreateMotorcycleBrandDto,
-  UpdateMotorcycleBrandDto,
   PaginatedResponse,
   ApiResponse,
   QueryParams,
+  CreateMotorcycleBrandDto,
+  UpdateMotorcycleBrandDto,
 } from "../types/motorcycleBrand.types";
 import { apiClient } from "./api-client";
 
